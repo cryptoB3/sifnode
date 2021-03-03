@@ -66,9 +66,7 @@ Where:
 |`<gas_price>`|The minimum gas price (e.g.: 0.5rowan).|
 |`<bind_ip_address>`|The IP Address to bind to (*Important:* this is what your node will advertise to the rest of the network). This should be the public IP of the host. You can usually fine your IP address using this command `ping $(hostname)`| 
 
-and your node will start synchronizing with the network. Please note that this may take several hours or more. 
-    • You can check the latest block height from this url: https://blockexplorer.sifchain.finance/
-    • To check how much you have caught up, run this:
+and your node will start synchronizing with the network. Please note that this may take several hours or more. You can check the latest block height from this url: https://blockexplorer.sifchain.finance/. To check how much you have caught up, run this:
 
 ```
 curl -Ss $(hostname):26657/status | jq -er '.result.sync_info'
@@ -76,14 +74,13 @@ curl -Ss $(hostname):26657/status | jq -er '.result.sync_info'
 
 ## Verify
 
-
-    • Once you have caught up with the latest block height, run
+Once you have caught up with the latest block height, run
 
 ``` 
 sifnodecli q tendermint-validator-set --node tcp://$(hostname):26657 --trust-node | grep address | wc -l
 ```
 
-    • This should give you a number, for example 54. Go to https://blockexplorer.sifchain.finance/validators and see if the Active number of validators match with your previous command output. If it did, Congratulations. You are now connected to the network.
+   • This should give you a number, for example 54. Go to https://blockexplorer.sifchain.finance/validators and see if the Active number of validators match with your previous command output. If it did, Congratulations. You are now connected to the network.
 
 ## Become a Validator
 
@@ -101,9 +98,9 @@ Where:
 |-----|----------|
 |`<moniker>`|A name for your node.|
 
-    • You will need to have tokens (rowan) on your account in order to become a validator.
-    • If you have rowan on another sif wallet, transfer it to the one you created using the mnemonic keys.
-    • Obtain your node moniker (if you don't already know it):
+   • You will need to have tokens (rowan) on your account in order to become a validator.
+   • If you have rowan on another sif wallet, transfer it to the one you created using the mnemonic keys.
+   • Obtain your node moniker (if you don't already know it):
 
 ``` 
 cat ~/.sifnoded/config/config.toml | grep moniker
@@ -120,13 +117,14 @@ The above command should give you your container ID. Copy it. Then run
 ```
 docker exec -it YOUR_CONTAINER_ID sh
 ```
-    • You are now inside the docker container.
+   • You are now inside the docker container.
     
 3. From within your running container, obtain your node's public key:
 
 ```
 /root/.sifnoded/cosmovisor/genesis/bin/sifnoded tendermint show-validator
 ```
+
 Note down the output of the above command. This will be your public key <pub_key>
 
 4. Run the following command to become a validator: 
