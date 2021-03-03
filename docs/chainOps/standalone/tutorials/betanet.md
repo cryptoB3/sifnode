@@ -5,6 +5,9 @@
 - [Docker](https://www.docker.com/get-started)
 - [Ruby 2.7.x](https://www.ruby-lang.org/en/documentation/installation)
 - [Golang](https://golang.org/doc/install)
+- [Git]
+
+## Here are the step by step instructions.
 
 ```
 sudo su -
@@ -13,17 +16,10 @@ apt upgrade
 apt install ruby-full
 apt install docker
 apt install docker-compose
-```
-
-## Make sure you have git installed. If not:
-
-```
 apt install git
-git clone https://github.com/Sifchain/sifnode && cd sifnode
-make clean install
 ```
 
-## Download the go tar.gz file from [here](https://golang.org/doc/install)
+Download the go tar.gz file from [here](https://golang.org/doc/install)
 
 ```
 tar -C /usr/local -xzf go1.16.linux-amd64.tar.gz
@@ -31,12 +27,6 @@ export GOPATH=/usr/local/go
 export PATH=$PATH:$GOPATH/bin
 ```
   - For convenience you can add the last two lines into your profile (.bashrc or .bash_profile file)
-
-## Make sure you have git installed. If not:
-
-```
-apt install git
-```
 
 ## Scaffold and run your node
 
