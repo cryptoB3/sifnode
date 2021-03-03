@@ -80,7 +80,7 @@ Once you have caught up with the latest block height, run
 sifnodecli q tendermint-validator-set --node tcp://$(hostname):26657 --trust-node | grep address | wc -l
 ```
 
-   - This should give you a number, for example 54. Go to https://blockexplorer.sifchain.finance/validators and see if the Active number of validators match with your previous command output. If it did, Congratulations. You are now connected to the network.
+   - This should give you a number, for example 54. Go to [here](https://blockexplorer.sifchain.finance/validators) and see if the Active number of validators match with your previous command output. If it did, Congratulations. You are now connected to the network.
 
 ## Become a Validator
 
@@ -144,7 +144,7 @@ sifnodecli tx staking create-validator \
     --gas-prices="0.5rowan" \
     --from=<moniker> \
     --keyring-backend=file \
-    --node tcp://ipAddress:26657
+    --node tcp://<ipAddress>:26657
 ```
 
 Where:
@@ -155,7 +155,7 @@ Where:
 |`<amount>`|The amount of rowan you wish to stake (the more the better). rowan amount should be multiplied into 10^18. For example if you want to stake 10 rowan, then you add 18 zeroes at the end to make it like 10000000000000000000rowan as the amount.|
 |`<pub_key>`|The public key of your node, that you got in the previous step.|
 |`<moniker>`|The moniker (name) of your node. Note you have to type moniker twice in the command below.|
-|`ipAddress>`|You can usually find your IP address using this command `ping $(hostname)`|
+|`<ipAddress>`|You can usually find your IP address using this command `ping $(hostname)`|
 
 
 
