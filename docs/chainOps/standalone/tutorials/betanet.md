@@ -5,8 +5,38 @@
 - [Docker](https://www.docker.com/get-started)
 - [Ruby 2.7.x](https://www.ruby-lang.org/en/documentation/installation)
 - [Golang](https://golang.org/doc/install)
-  - Add `export GOPATH=~/go` to your shell
-  - Add `export PATH=$PATH:$GOPATH/bin` to your shell
+
+```
+sudo su -
+apt update
+apt upgrade
+apt install ruby-full
+apt install docker
+apt install docker-compose
+```
+
+## Make sure you have git installed. If not:
+
+```
+apt install git
+git clone https://github.com/Sifchain/sifnode && cd sifnode
+make clean install
+```
+
+## Download the go tar.gz file from [here](https://golang.org/doc/install)
+
+```
+tar -C /usr/local -xzf go1.16.linux-amd64.tar.gz
+export GOPATH=/usr/local/go
+export PATH=$PATH:$GOPATH/bin
+```
+  - For convenience you can add the last two lines into your profile (.bashrc or .bash_profile file)
+
+## Make sure you have git installed. If not:
+
+```
+apt install git
+```
 
 ## Scaffold and run your node
 
@@ -28,6 +58,9 @@ make clean install
 rake "keys:generate:mnemonic"
 ```
 
+  - This will generate the mnemonic keys for you. Note it down on a piece of paper, create a passphrase and remember it!
+  - Do not share the mnemonic keys with anyone and keep the keys safe.
+
 4. Boot your node:
 
 ```
@@ -38,60 +71,29 @@ Where:
 
 |Param|Description|
 |-----|----------|
-|`<moniker>`|A name for your node.|
+|`<moniker>`|A name for your node. Could be anything like MySifNode|
 |`<mnemonic>`|The mnemonic phrase generated in the previous step.|
 |`<gas_price>`|The minimum gas price (e.g.: 0.5rowan).|
-|`<bind_ip_address>`|The IP Address to bind to (*Important:* this is what your node will advertise to the rest of the network). This should be the public IP of the host.|
+|`<bind_ip_address>`|The IP Address to bind to (*Important:* this is what your node will advertise to the rest of the network). This should be the public IP of the host. You can usually fine your IP address using this command `ping $(hostname)`| 
 
-and your node will start synchronizing with the network. Please note that this may take several hours or more.
+and your node will start synchronizing with the network. Please note that this may take several hours or more. 
+    • You can check the latest block height from this url: https://blockexplorer.sifchain.finance/
+    • To check how much you have caught up, run this:
+
+```
+curl -Ss $(hostname):26657/status | jq -er '.result.sync_info'
+```
 
 ## Verify
 
-You can verify that you're connected by running:
 
-```
-sifnodecli q tendermint-validator-set --node tcp://44.235.108.41:26657 --trust-node
-```
+    • Once you have caught up with the latest block height, run
 
-and you should see the following primary validator node/s for Sifchain:
-
-```
-validators:
-- address: sifvalcons1qv28dvpgue9vlwzncpc75t3l3l7apcee423tem
-  pubkey: sifvalconspub1zcjduepqx0jdvxtyx8fd9aff3fr4g946azapz9zujm0mtf8gqx92f0uts90skzrfws
-  proposerpriority: -875
-  votingpower: 1000
-- address: sifvalcons18q4fh3g748d7krq4gnx0lktxlr8l6czzvvp7p6
-  pubkey: sifvalconspub1zcjduepqsymd2qtgqtt5vhdzc2dphnr6ulr2eszvyre8rzzgwva232f76h7svryp06
-  proposerpriority: 625
-  votingpower: 1000
-- address: sifvalcons12gwn2fgatqappspxevja8ry65t0rmv8k8xtgme
-  pubkey: sifvalconspub1zcjduepqk2jktuqwgvs6k0xy6fg6972pu956476x5wtwtjx4al4gns2wx59sgd4kky
-  proposerpriority: -125
-  votingpower: 1000
-- address: sifvalcons1dv83vy7k0zmezpkzqw7q95tht7fgwj5q2hz97g
-  pubkey: sifvalconspub1zcjduepqw8zehuezpsse9f0pe5su0faxteqgvsa7j074s674e0pu8jrf3cyqt9frej
-  proposerpriority: -1625
-  votingpower: 1000
-- address: sifvalcons1wn97nf5e80n0avr736a5p3sqwgf9ng6dgvctn7
-  pubkey: sifvalconspub1zcjduepq8fcqvd6x3m74zdckqqsfaq5gdnd9y4ypc724v4alyyl33e5pr7fqqzae69
-  proposerpriority: -1875
-  votingpower: 1000
-- address: sifvalcons1nz9ehhaxw6s79v5c46a2mg7q3a4p2mk8xkwkyj
-  pubkey: sifvalconspub1zcjduepqkcsxq9gu5w8j32x9w28vga0d33hcasaa726c22agp892sxu4g5eqrlxm8j
-  proposerpriority: 375
-  votingpower: 1000
-- address: sifvalcons1k6f2u93hjnn9khw5flj9sa6fvf05vzfpsyjjat
-  pubkey: sifvalconspub1zcjduepqd3x4ryy8e4wnn6gxzagk3sz355gu725tx0a260xhnaa76pz3whesfyaz6f
-  proposerpriority: 3875
-  votingpower: 1000
-- address: sifvalcons1awm72sjma7fphp0mtsfc6szyg055h2k8hdwsnn
-  pubkey: sifvalconspub1zcjduepq7f72cfve29dwn09r8z3hdss9n05hhqpsj653nsrvl2t66mnnfe0s44phkl
-  proposerpriority: -375
-  votingpower: 1000
+``` 
+sifnodecli q tendermint-validator-set --node tcp://$(hostname):26657 --trust-node | grep address | wc -l
 ```
 
-Congratulations! You are now connected to the network.
+    • This should give you a number, for example 54. Go to https://blockexplorer.sifchain.finance/validators and see if the Active number of validators match with your previous command output. If it did, Congratulations. You are now connected to the network.
 
 ## Become a Validator
 
@@ -109,15 +111,35 @@ Where:
 |-----|----------|
 |`<moniker>`|A name for your node.|
 
-*You will need to have tokens (rowan) on your account in order to become a validator.*
+    • You will need to have tokens (rowan) on your account in order to become a validator.
+    • If you have rowan on another sif wallet, transfer it to the one you created using the mnemonic keys.
+    • Obtain your node moniker (if you don't already know it):
 
-2. From within your running container, obtain your node's public key:
+``` 
+cat ~/.sifnoded/config/config.toml | grep moniker
+``` 
+
+2. Go inside the docker container
 
 ```
-sifnoded tendermint show-validator
+docker ps
 ```
 
-3. Run the following command to become a validator: 
+The above command should give you your container ID. Copy it. Then run
+
+```
+docker exec -it YOUR_CONTAINER_ID sh
+```
+    • You are now inside the docker container.
+    
+3. From within your running container, obtain your node's public key:
+
+```
+/root/.sifnoded/cosmovisor/genesis/bin/sifnoded tendermint show-validator
+```
+Note down the output of the above command. This will be your public key <pub_key>
+
+4. Run the following command to become a validator: 
 
 ```
 sifnodecli tx staking create-validator \
@@ -139,9 +161,12 @@ Where:
 
 |Param|Description|
 |-----|----------|
-|`<amount>`|The amount of rowan you wish to stake (the more the better).|
+|`Commission`|Commission rates are in %. 0.1 means 10%. Modify the amount of commission you want.|
+|`<amount>`|The amount of rowan you wish to stake (the more the better). rowan amount should be multiplied into 10^18. For example if you want to stake 10 rowan, then you add 18 zeroes at the end to make it like 10000000000000000000rowan as the amount.|
 |`<pub_key>`|The public key of your node, that you got in the previous step.|
-|`<moniker>`|The moniker (name) of your node.|
+|`<moniker>`|The moniker (name) of your node. Note you have to type moniker twice in the command below.|
+
+
 
 e.g.:
 
@@ -151,17 +176,19 @@ sifnodecli tx staking create-validator \
     --commission-max-rate="0.1" \
     --commission-rate="0.1" \
     --amount="1000000000000000000000rowan" \
-    --pubkey=thepublickeyofyournode \
-    --moniker=my-node \
+    --pubkey=$(/root/.sifnoded/cosmovisor/genesis/bin/sifnoded tendermint show-validator) \
+    --moniker=MySifNode \
     --chain-id=sifchain \
     --min-self-delegation="1" \
     --gas-prices="0.5rowan" \
-    --from=my-node \
+    --from=MySifNode \
     --keyring-backend=file \
-    --node tcp://44.235.108.41:26657
+    --node tcp://$(hostname):26657
 ```
 
 ## Additional Resources
+
+Join our discord [here](https://discord.gg/pArfJZwX) if you have any other questions.
 
 ### Endpoints
 
