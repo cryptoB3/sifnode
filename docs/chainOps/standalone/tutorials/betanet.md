@@ -181,6 +181,22 @@ sifnodecli tx staking create-validator \
 
 Join our discord [here](https://discord.gg/pArfJZwX) if you have any other questions.
 
+Helpful commands:
+
+```
+#To safely restart  your node...
+docker restart CONTAINER_ID
+
+#If your node got jailed unfotunately, get help from the community members and admins. Once you are ready issue the below command to unjail
+sifnodecli tx slashing unjail --keyring-backend file --from <Moniker> --gas-adjustment="1.5" --gas="200000" --fees 5000000rowan --chain-id sifchain
+
+#If you want to delegate more rowan tokens to your node.
+sifnodecli tx staking delegate YOUR_VALIDATOR_ADDRESS <Amount*10^18>rowan --gas-prices="0.5rowan" --from=YOUR_MONIKER --keyring-backend=file --chain-id=sifchain --node tcp://YOUR_IP_ADDRESS:26657
+
+
+```
+
+
 ### Endpoints
 
 |Description|Address|
